@@ -1,8 +1,8 @@
-# This repo is for my webpage
-
-<!-- (lalovida.com) -->
-
-## November TODO
-- [ ] Change README to org page
+* This repo is for my webpage
+#+begin_comment
+[[lalovida.com]]
+#+end_comment
+** November TODO [1/3]
+- [X] Change README to org page
 - [ ] host page on actual site.
 - [ ] Change site to an elm generated one
