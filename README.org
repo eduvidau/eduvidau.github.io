@@ -2,9 +2,11 @@
 
 [[lalovida.com]]
 
-** November TODO [2/5]
+** November TODO [3/8]
 - [X] Change README to org page
 - [X] Point domain to hosting site.
+- [X] Elmify webpage
+- [ ] Add translatiing functionality
 - [ ] Change site to an elm generated one
 - [ ] Create Footer and header
 - [ ] Create propper header and call to actions
