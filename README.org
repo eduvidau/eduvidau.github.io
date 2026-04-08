@@ -6,7 +6,7 @@
 - [X] Change README to org page
 - [X] Point domain to hosting site.
 - [X] Elmify webpage
-- [ ] Add translatiing functionality
+- [X] Add translating functionality
 - [ ] Change site to an elm generated one
 - [ ] Create Footer and header
 - [ ] Create propper header and call to actions

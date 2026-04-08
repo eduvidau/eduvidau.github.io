@@ -2,7 +2,7 @@ module LandingPage exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Html, Attribute, div, button, text,input, header, h1, img, p, section, em, footer, small)
+import Html exposing (Attribute, Html, button, div, em, footer, h1, header, img, input, p, section, small, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Url
@@ -13,180 +13,135 @@ import Url
 
 
 main =
-  Browser.document { init = init
-                   , view = view
-                   , update = update
-                   , subscriptions = subscriptions
-                   }
+    Browser.document
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
+
 
 
 -- MODEL
+
+
 type Language
     = Spanish
-      | English
-    
-type alias  Duo
-    = ( String
-      , String
-      )
+    | English
+
+
+type alias Duo =
+    { eng : String
+    , spa : String
+    }
+
 
 type alias Model =
     { language : Language
     , p1 : String
     }
-   
 
 
-init :() -> ( Model, Cmd Msg )
-init flags = ({ language = Spanish
-              , p1 = "Hello Lalo"
-              }
-             , Cmd.none
-             )
-  
+init : () -> ( Model, Cmd Msg )
+init flags =
+    ( { language = Spanish
+      , p1 = "Hello Lalo"
+      }
+    , Cmd.none
+    )
 
 
 
 -- UPDATE
 
 
-type Msg = Translate
+type Msg
+    = Translate
 
 
-update : Msg -> Model -> ( Model , Cmd Msg )
-update msg {language, p1} =
-  case msg of
-      Translate ->
-          case language of
-              English ->
-                 (
-                  { language = Spanish
-                  , p1 = "Holla Lalo"
-                  }
-                 , Cmd.none
-                 )
-              Spanish ->
-                  ( { language = English
-                    , p1 = "Hello Lalo"
-                    }
-                  ,Cmd.none
-                  )
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg { language, p1 } =
+    case msg of
+        Translate ->
+            case language of
+                English ->
+                    ( { language = Spanish
+                      , p1 = "Holla Lalo"
+                      }
+                    , Cmd.none
+                    )
+
+                Spanish ->
+                    ( { language = English
+                      , p1 = "Hello Lalo"
+                      }
+                    , Cmd.none
+                    )
+
+
 
 -- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+    Sub.none
+
+
 
 -- VIEW
 
+
 type alias Document =
     { title : String
-    ,body : List (Html Msg)
+    , body : List (Html Msg)
     }
-    
+
+
 view : Model -> Document
-view {language, p1} =
-    case language of
-        Spanish ->
-            { title = "Lalo Vidaurri Ski Instructor de esqui"
-            , body =
-                  [ div [class "wrapper"]
-                        [header []
-                             [h1 []
-                                  [text "Lalo"]
-                             ,img [src "./images/me.jpg"
-                                  ,alt "Este soy yo"
-                                  ,width 225
-                                  ,height 300]
-                                  []
-                             ,p []
-                                 [text "Cyclista, Adventurero, Barista, Programador"]
-                             ,button [ onClick Translate] [ text "Translate"]
-                             ]
-                        ,section []
-                            [h1 []
-                                 [text "Aserca de mi"]
-                            ,p []
-                                [em []
-                                     [text """
-                                            NacÌ en MÈxico y cresi en Indiana.
-                                            Actualmente me encuentro en Colorado, donde paso mucho tiempo al aire libre.
-                                            En este momento soy un instructor de esquiar en Loveland Ski Area
-                                            """
-                                     ]
-                                ]
-                            ,h1 []
-                                [text "Talentos"]
-                            ,p []
-                                [text """
-                                       Certificado para ensenar prinsipiantes y aficionados esquiadores.
-                                       
-                                       """
-                                ]
-                            ]
-                        ,footer []
-                            [p []
-                                 [text "MantÈn las ruedas girando y las puntas apuntando hacia abajo."]
-                            ,p []
-                                [small []
-                                     [text "Hosted on GitHub Pages"]
-                            ]
-                        ]
+view { language, p1 } =
+    { title = translate language title
+    , body =
+        [ div [ class "wrapper" ]
+            [ header []
+                [ h1 []
+                    [ text "Lalo" ]
+                , img
+                    [ src "./images/me.jpg"
+                    , alt (translate language imageDesc)
+                    , width 225
+                    , height 300
                     ]
-                 ]
-            }
-        English ->
-            { title = "Lalo Vidaurri Ski Instructor"
-            , body =
-                  [ div [class "wrapper"]
-                        [header []
-                             [h1 []
-                                  [text "Lalo"]
-                             ,img [src "./images/me.jpg"
-                                  ,alt "This me"
-                                  ,width 225
-                                  ,height 300]
-                                  []
-                             ,p []
-                                 [text "Cyclist, Adventurer, Barista, Developer"]
-                             ,button [ onClick Translate] [ text "Translate"]
-                             ]
-                        ,section []
-                            [h1 []
-                                 [text "About"]
-                            ,p []
-                                [em []
-                                     [text """
-                                            I was born in Mexico, raised in Indiana.
-                                            Currently in Colorado where I spend alot of time outside.
-                                            I am currently doing a wild bikepacking adventure in the Ozarks.
-                                            Feel free to track my progress on the link bellow my picture.
-                                            """
-                                     ]
-                                ]
-                            ,h1 []
-                                [text "Skills"]
-                            ,p []
-                                [text """
-                                       Software developer learning front end.
-                                       Hoping to work with individual, and small companies
-                                       to make meaningfull websites.
-                                       """
-                                ]
-                            ]
-                        ,footer []
-                            [p []
-                                 [text "Keep the wheels spinning"]
-                            ,p []
-                                [small []
-                                     [text "Hosted on GitHub Pages"]
-                            ]
-                        ]
+                    []
+                , p []
+                    [ text (translate language traits) ]
+                , button [ onClick Translate ] [ text "Translate" ]
+                ]
+            , section []
+                [ h1 []
+                    [ text (translate language about) ]
+                , p []
+                    [ em []
+                        [ text (translate language aboutText) ]
                     ]
-                 ]
-            }
+                , h1 []
+                    [ text (translate language talents) ]
+                , p []
+                    [ text (translate language talentsText)
+                    ]
+                ]
+            , footer []
+                [ p []
+                    [ text (translate language bye) ]
+                , p []
+                    [ small []
+                        [ text "Hosted on GitHub Pages" ]
+                    ]
+                ]
+            ]
+        ]
+    }
+
 
 
 {--
@@ -203,35 +158,88 @@ view {language, p1} =
     --<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
    -- <![endif]-->
   </head>
-
-  <body> 
-     <div class="wrapper">
-      <header>
-        <h1>Lalo</h1>
-    <img src="./images/me.jpg" alt="This me" width="225" height="300">
-        <p>Cyclist, Adventurer, Barista, Developer</p>
-      </header>
-      <section>
-        <h1>About</h1>
-
-        <p><em>I was born in Mexico, raised in Indiana. Currently in
-        Colorado where I spend alot of time outside. I am
-        currently doing a wild bikepacking adventure in the Ozarks.
-        Feel free to track my progress on the link bellow my picture.
-    </em></p>
-    <h1> Skills</h1>
-    <p>Software developer learning front end. Hoping to work with individual, and small companies
-      to make meaningfull websites.</p>
-      </section>
-      <footer>
-        <p>Keep the wheels spinning</p>
-        <p><small>Hosted on GitHub Pages</small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-  </body>
+    ... ALL The elm
+ <script src="javascripts/scale.fix.js"></script>
 --</html>
-
 --}
+
+
+translate : Language -> Duo -> String
+translate language duo =
+    case language of
+        English ->
+            duo.eng
+
+        Spanish ->
+            duo.spa
+
+
+title : Duo
+title =
+    { eng = "Lalo Vidaurri Ski Instructor"
+    , spa = "Lalo Vidaurri Ski Instructor de esqui"
+    }
+
+
+imageDesc : Duo
+imageDesc =
+    { eng = "This me"
+    , spa = "Este soy yo"
+    }
+
+
+traits : Duo
+traits =
+    { eng = "Cyclist, Adventurer, Barista, Developer"
+    , spa = "Cyclista, Adventurero, Barista, Programador"
+    }
+
+
 about : Duo
-about = ("About" , "Acerca de mi")
+about =
+    { eng = "About"
+    , spa = "Acerca de mi"
+    }
+
+
+aboutText : Duo
+aboutText =
+    { eng = """
+                I was born in Mexico, raised in Indiana.
+                Currently in Colorado where I spend alot of time outside.
+                I am currently doing a wild bikepacking adventure in the Ozarks.
+                Feel free to track my progress on the link bellow my picture.
+            """
+    , spa = """
+                Nac√≠, en M√©xico y cres√≠, en Indiana.
+                Actualmente me encuentro en Colorado, donde paso mucho tiempo al aire libre.
+                En este momento soy un instructor de esquiar en Loveland Ski Area
+            """
+    }
+
+
+talents : Duo
+talents =
+    { eng = "Skills"
+    , spa = "Talentos"
+    }
+
+
+talentsText : Duo
+talentsText =
+    { eng = """
+           Software developer learning front end.
+           Hoping to work with individual, and small companies
+           to make meaningfull websites.
+           """
+    , spa = """
+                Certificado para ensenar prinsipiantes y aficionados esquiadores.
+             """
+    }
+
+
+bye : Duo
+bye =
+    { eng = "Keep the wheels spinning"
+    , spa = "Mant√©n las ruedas girando y las puntas apuntando hacia abajo."
+    }
